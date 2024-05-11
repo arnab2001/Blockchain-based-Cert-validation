@@ -39,12 +39,11 @@ app.get("/certificate/data/:id", (req, res) => {
 
 app.get("/certificate/verify/:id", (req, res) => {
   let certificateId = req.params.id;
-
   Certificates.findById(certificateId)
     .then(obj => {
       obj.verifyData().then(verified => {
-        if (verified) res.status(200).send();
-        else res.status(401).send();
+        if (verified) res.status(200).send(verified);
+        else res.status(401).send(verified);
       });
     })
     .catch(err =>
@@ -53,18 +52,19 @@ app.get("/certificate/verify/:id", (req, res) => {
 });
 
 app.post("/certificate/generate", (req, res) => {
-  const { candidateName, orgName, courseName, assignDate, duration } = req.body;
+  const { candidateName,studentId, orgName, courseName, assignDate,metaData,ipfsHash ,duration } = req.body;
 
   const given = new Date(assignDate);
 
-  let expirationDate = given.setFullYear(given.getFullYear() + duration);
-
-  expirationDate = expirationDate.toString();
+  let expirationDate = given.getTime();
 
   const certificate = new Certificates({
     candidateName,
+    studentId,
     orgName,
     courseName,
+    metaData,
+    ipfsHash,
     expirationDate,
     assignDate,
     duration

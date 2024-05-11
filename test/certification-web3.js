@@ -1,3 +1,4 @@
+const { assert } = require("console");
 const web3 = require("web3");
 var Certification = artifacts.require("./Certification.sol");
 
@@ -9,9 +10,11 @@ contract("Certification", accounts => {
       .then(instance => {
         obj.candidateName = "Saurabh Thakur";
         obj.orgName = "Udacity";
+        obj.studentId = "123456";
         obj.courseName = "Full Stack Nanodegree";
         obj.expirationDate = new Date().getTime();
         obj.instance = instance;
+        obj.data = "data";
         obj.id = "5c0157fd3ff47a2a54075b01";
         return instance.generateCertificate(
           obj.id,
@@ -19,6 +22,8 @@ contract("Certification", accounts => {
           obj.orgName,
           obj.courseName,
           obj.expirationDate,
+          obj.studentId,
+          obj.data,
           {
             from: accounts[0]
           }
@@ -59,6 +64,12 @@ contract("Certification", accounts => {
           obj.expirationDate,
           "the expiration date is correct"
         );
+        assert.equal(
+          certificateInfo[4],
+          obj.studentId,
+          "the student id is correct"
+        );
+        assert.equal(certificateInfo[5], obj.data, "the data is correct");
       }));
 
   it("throws an exception for invalid candidate ids", () =>
@@ -82,6 +93,9 @@ contract("Certification", accounts => {
         obj.orgName,
         obj.courseName,
         obj.expirationDate,
+        obj.studentId,
+        obj.data,
+
         {
           from: accounts[0]
         }
@@ -93,6 +107,8 @@ contract("Certification", accounts => {
           obj.orgName,
           obj.courseName,
           obj.expirationDate,
+          obj.studentId,
+          obj.data,
           {
             from: accounts[0]
           }

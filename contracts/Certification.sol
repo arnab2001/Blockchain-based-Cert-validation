@@ -5,8 +5,12 @@ contract Certification {
 
     struct Certificate {
         string candidate_name;
+        string student_id;
         string org_name;
         string course_name;
+        string metadata;
+        string ipfs_hash;
+        
         uint256 expiration_date;
     }
 
@@ -27,19 +31,23 @@ contract Certification {
     function generateCertificate(
         string memory _id,
         string memory _candidate_name,
-        string memory _org_name, 
+        string memory _student_id,
+        string memory _org_name,
         string memory _course_name, 
+        string memory _metadata,
+        string memory _ipfs_hash,
+        
         uint256 _expiration_date) public {
         bytes32 byte_id = stringToBytes32(_id);
         require(certificates[byte_id].expiration_date == 0, "Certificate with given id already exists");
-        certificates[byte_id] = Certificate(_candidate_name, _org_name, _course_name, _expiration_date);
+        certificates[byte_id] = Certificate(_candidate_name, _student_id, _org_name, _course_name,_metadata,_ipfs_hash, _expiration_date);
         emit certificateGenerated(byte_id);
     }
 
-    function getData(string memory _id) public view returns(string memory, string memory, string memory, uint256) {
+    function getData(string memory _id) public view returns(string memory, string memory, string memory, string memory,string memory, string memory, uint256) {
         bytes32 byte_id = stringToBytes32(_id);
         Certificate memory temp = certificates[byte_id];
         require(temp.expiration_date != 0, "No data exists");
-        return (temp.candidate_name, temp.org_name, temp.course_name, temp.expiration_date);
+        return (temp.candidate_name, temp.student_id, temp.org_name, temp.course_name,temp.metadata,temp.ipfs_hash, temp.expiration_date);
     }
 }

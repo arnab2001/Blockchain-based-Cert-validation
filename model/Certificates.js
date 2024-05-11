@@ -14,7 +14,27 @@ const CertificateSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  studentId:{
+    type: String,
+    required: true,
+    trim: true
+  },
   courseName: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  courseName: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  metaData: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  ipfsHash: {
     type: String,
     required: true,
     trim: true
@@ -55,17 +75,27 @@ CertificateSchema.methods.verifyData = function() {
     .getCertificateData(certificateId)
     .then(blockData => {
       const responseObject = {
-        candidateName: blockData[0],
-        orgName: blockData[1],
-        courseName: blockData[2],
-        expirationDate: parseInt(blockData[3])
+        candidateName: blockData[1],
+        studentId: blockData[0],
+        orgName: blockData[2],
+        courseName: blockData[3],
+        metaData: blockData[4],
+        ipfsHash: blockData[5],
+  
+        expirationDate: parseInt(blockData[6])
       };
       const databaseObject = {
         candidateName: data.candidateName,
+        studentId: data.studentId,
         orgName: data.orgName,
         courseName: data.courseName,
+        metaData: data.metaData,
+        ipfsHash: data.ipfsHash,
+  
         expirationDate: data.expirationDate
       };
+      console.log("block", responseObject);
+      console.log("database",databaseObject);
       if (JSON.stringify(responseObject) === JSON.stringify(databaseObject))
         return true;
       else throw false;
@@ -78,15 +108,18 @@ CertificateSchema.methods.verifyData = function() {
 CertificateSchema.methods.appendBlockchain = function() {
   const data = this;
 
-  const { candidateName, orgName, courseName, expirationDate } = data;
+  const { candidateName, studentId, orgName, courseName, metaData, ipfsHash, expirationDate } = data;
 
   const certificateId = data._id.toString();
 
   return truffle_connect.generateCertificate(
     certificateId,
     candidateName,
+    studentId,
     orgName,
     courseName,
+    metaData,
+    ipfsHash,
     expirationDate
   );
 };
