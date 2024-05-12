@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import SubmitAnimation from "./SubmitAnimation";
 import { generateCertificate } from "../Utils/apiConnect";
 
+
 const styles = theme => ({
   container: {
     display: "flex",
@@ -77,11 +78,18 @@ const styles = theme => ({
 });
 
 class GenerateForm extends React.Component {
+
+  logo =JSON.parse(localStorage.getItem("data")).logo;
+ 
+    name = JSON.parse(localStorage.getItem("data")).name
+
+
   state = {
     firstname: "",
     lastname: "",
-    organization: "FossAsia",
-    orgLogo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/FOSSASIA_Logo.svg/600px-FOSSASIA_Logo.svg.png",
+    studentId: "",
+    organization: `${this.name}`,
+    orgLogo: this.logo,
     coursename: "",
     assignedOn: null,
     duration: 0,
@@ -104,6 +112,7 @@ class GenerateForm extends React.Component {
     const {
       firstname,
       lastname,
+      studentId,
       organization,
       coursename,
       assignedOn,
@@ -114,9 +123,11 @@ class GenerateForm extends React.Component {
     let assignDate = new Date(assignedOn).getTime();
     generateCertificate(
       candidateName,
+      studentId,
       coursename,
       organization,
       assignDate,
+
       parseInt(duration),
       emailId
     )
@@ -136,6 +147,7 @@ class GenerateForm extends React.Component {
       firstname,
       lastname,
       organization,
+      studentId,
       coursename,
       duration,
       currentState,
@@ -173,6 +185,17 @@ class GenerateForm extends React.Component {
                   className={classes.textField}
                   value={lastname}
                   onChange={this.handleChange("lastname")}
+                  margin="normal"
+                  variant="outlined"
+                />
+
+                <TextField
+                  required
+                  id="studentId"
+                  label="Student Id"
+                  className={classes.textField}
+                  value={studentId}
+                  onChange={this.handleChange("studentId")}
                   margin="normal"
                   variant="outlined"
                 />

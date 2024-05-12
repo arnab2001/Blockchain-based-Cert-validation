@@ -14,7 +14,16 @@ const postHeader = {
 
 let host = "";
 
-if (process.env.NODE_ENV !== "production") host = "http://localhost:3000";
+if (process.env.NODE_ENV !== "production") host = "http://localhost:3001";
+export const login = publicAddress =>
+  fetch(`${host}/auth/login`, {
+    ...postHeader,
+    body: JSON.stringify({ publicAddress })
+  })
+    .then(res => res.json())
+    .catch(err => {
+      console.log(err);
+    });
 
 export const getCertificate = certificateId =>
   fetch(`${host}/certificate/data/${certificateId}`, getHeader)

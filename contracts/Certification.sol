@@ -10,7 +10,6 @@ contract Certification {
         string course_name;
         string metadata;
         string ipfs_hash;
-        
         uint256 expiration_date;
     }
 

@@ -8,11 +8,12 @@ module.exports = {
       provider: function() {
         return new HDWalletProvider(
           process.env.MNEMONIC,
-          //"https://eth-sepolia.g.alchemy.com/v2/kE3guiCdVFKd44_IAIriMKcEV2XRPd9t" // Update with your Alchemy API key
-          process.env.LOCAL_ENDPOINT
+          // "https://eth-sepolia.g.alchemy.com/v2/kE3guiCdVFKd44_IAIriMKcEV2XRPd9t" // Update with your Alchemy API key
+          // process.env.LOCAL_ENDPOINT
+          process.env.PROJECT_ENDPOINT
         );
       },
-      network_id: 1715374208088, // Polygon Mumbai testnet network ID
+      network_id: 11155111, // Polygon Mumbai testnet network ID
       gas: 8000000, // Gas limit used for deploys
       confirmations: 2, // # of confs to wait between deployments. (default: 0)
       timeoutBlocks: 200, // # of blocks before a deployment times out  (minimum/default: 50)

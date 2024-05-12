@@ -53,6 +53,14 @@ const CertificateSchema = new mongoose.Schema({
     type: Number,
     required: true,
     trim: true
+  },
+  transactionHash: {
+    type: String,
+    trim: true
+  },
+  blockHash: {
+    type: String,
+    trim: true
   }
 });
 
@@ -70,6 +78,7 @@ CertificateSchema.methods.toJSON = function() {
 
 CertificateSchema.methods.verifyData = function() {
   const data = this;
+  console.log(data);
   const certificateId = data._id.toString();
   return truffle_connect
     .getCertificateData(certificateId)
@@ -81,9 +90,9 @@ CertificateSchema.methods.verifyData = function() {
         courseName: blockData[3],
         metaData: blockData[4],
         ipfsHash: blockData[5],
-  
         expirationDate: parseInt(blockData[6])
       };
+      console.log("block", responseObject);
       const databaseObject = {
         candidateName: data.candidateName,
         studentId: data.studentId,

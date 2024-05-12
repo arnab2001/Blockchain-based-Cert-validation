@@ -13,7 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Grid from "@material-ui/core/Grid";
 import ChainImage from "../Images/chainT.png";
-
+import { login } from "../Utils/apiConnect";
 const styles = theme => ({
   hidden: {
     [theme.breakpoints.down("sm")]: {
@@ -64,6 +64,42 @@ const styles = theme => ({
 });
 
 class SignIn extends Component {
+  handleConnectMetamask = async () => {
+    try {
+      // Check if MetaMask is installed
+      if (window.ethereum) {
+        // Request account access
+        await window.ethereum.enable();
+        // const accounts = await window.ethereum.request({
+        //   method: "eth_requestAccounts"
+        // });
+  
+        // localStorage.setItem("walletId", accounts[0]);
+  
+        // Use fetch API for API call
+        const response = await fetch("http://localhost:3001/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ publicAddress: localStorage.getItem("walletId") })
+        });
+  
+        if (response.ok) {
+          const data = await response.json(); // Parse response as JSON
+          console.log("Login successful!", data);
+          // Redirect the user to /generate-certificate
+          localStorage.setItem("data", JSON.stringify(data.university));
+          this.props.history.push("/generate-certificate");
+        } else {
+          const errorMessage = await response.text();
+          window.alert(errorMessage);
+        }
+      } else {
+        alert("MetaMask is not installed");
+      }
+    } catch (error) {
+      console.error("Error connecting with MetaMask:", error);
+    }
+  };
   render() {
     const { classes } = this.props;
     return (
@@ -81,7 +117,7 @@ class SignIn extends Component {
                 Sign in
               </Typography>
               <form className={classes.form}>
-                <FormControl margin="normal" required fullWidth>
+                {/* <FormControl margin="normal" required fullWidth>
                   <InputLabel htmlFor="email">Email Address</InputLabel>
                   <Input
                     id="email"
@@ -111,6 +147,16 @@ class SignIn extends Component {
                   className={classes.submit}
                 >
                   Sign in
+                </Button> */}
+                <Button
+                  
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  onClick={this.handleConnectMetamask}
+                >
+                  Login With Metamask
                 </Button>
               </form>
             </Paper>

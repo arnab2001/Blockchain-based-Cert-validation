@@ -17,8 +17,8 @@ const connectWeb3 = function() {
   //   console.log("Connected to web3");
   // }
   console.log(process.env.PROJECT_ENDPOINT);
-  self.web3 = new Web3(new Web3.providers.HttpProvider(process.env.LOCAL_ENDPOINT));
-  // self.web3 = new Web3(new HDWalletProvider(process.env.MNEMONIC, process.env.PROJECT_ENDPOINT));
+  // self.web3 = new Web3(new Web3.providers.HttpProvider(process.env.LOCAL_ENDPOINT));
+  self.web3 = new Web3(new HDWalletProvider(process.env.MNEMONIC, process.env.PROJECT_ENDPOINT));
 
   CertificationInstance.setProvider(self.web3.currentProvider);
   if (typeof CertificationInstance.currentProvider.sendAsync !== "function") {
@@ -78,7 +78,7 @@ const generateCertificate = function(
           metaData,
           ipfsHash,
           expirationDate,
-          { from: accountAddress.toLowerCase(), gas: 200000 }
+          { from: accountAddress.toLowerCase(), gas: 800000 }
         )
       )
       .catch(err => {
