@@ -13,10 +13,6 @@ const UniversitySchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true, // Ensure unique public address
-    validate: {
-      validator: (v) => v.toLowerCase() === v, // Validate as lowercase
-      message: "Public address must be lowercase"
-    },
     minlength: 3, // Set minimum length for public address
     maxlength: 50 // Set a reasonable maximum length
   },
